@@ -1,5 +1,4 @@
 requests
 yfinance
 pandas
-math
 scikit-learn
