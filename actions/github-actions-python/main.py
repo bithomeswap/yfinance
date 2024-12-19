@@ -75,12 +75,12 @@ def reverse_signlog(X):#反标准化
     temp_data = np.exp(X) - 1
     # 步骤2: np.sign(X)恢复原始数据的符号
     return np.sign(X)*(np.exp(X)-1)
-# yesterday ln
-def signlog(X):
+def signlog(X):#数据标准化【目的是进行机器学习的时候方便】
     #np.sign((X)：返回 X 的符号。如果 X 是正数，返回1；如果 X 是负数，返回-1；如果 X 是0，返回0。
     #np.log(1.0 + abs(X))：计算 1.0 + abs(X) 的自然对数，其中 np 通常指的是 Python 中的 NumPy 库，np.log 表示自然对数。
     # factor value因子值
     return np.sign(X)*np.log(1.0 + abs(X))
+
 df=df[["symbol","总市值","净利润","总收入","净资产","category"]]#category为行业数据
 # df=df[["symbol","总市值","净利润","总收入","净资产",]]#category为行业数据
 df=df.fillna(0).set_index("symbol")
@@ -128,7 +128,7 @@ df=df.reset_index(drop=False)
 df=df.rename(columns={"symbol":"代码"})
 r=r.merge(df[["总市值","代码"]],on="代码")
 r=r.rename(columns={0:"估值"},inplace=False)
-# r["市值（反标准化）"]=reverse_signlog(df["市值"])#对标准化的市值进行反标准化
+r["总市值（反标准化）"]=reverse_signlog(df["总市值"])#对标准化的市值进行反标准化
 # r.to_csv("r.csv")
 r=r[r["估值"]<0]#只选择低估的标的
 print(type(r))#DataFrame格式
